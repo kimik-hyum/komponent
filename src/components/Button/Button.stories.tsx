@@ -8,9 +8,7 @@ export default {
   component: Button,
   description: `A button.`,
   argTypes: {
-    backgroundColor: { control: "color" },
-    color: { control: "color" },
-    primary: { control: "boolean" },
+    size: { control: "select" },
   },
 } as Meta;
 
@@ -22,21 +20,6 @@ const Template: Story<ButtonProps> = (args) => (
 //👇 Each story then reuses that template
 export const Default = Template.bind({});
 Default.args = {};
-
-export const Primary = Template.bind({});
-Primary.args = {
-  primary: true,
-};
-
-export const CustomBackground = Template.bind({});
-CustomBackground.args = {
-  backgroundColor: "#A78BFA",
-};
-
-export const CustomFontColor = Template.bind({});
-CustomFontColor.args = {
-  color: "#1E40AF",
-};
 
 export const OnClick = Template.bind({});
 OnClick.args = {

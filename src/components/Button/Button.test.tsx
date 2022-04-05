@@ -14,7 +14,7 @@ describe("Button", () => {
     });
   });
   test("renders a primary button", async () => {
-    render(<Button primary>Click me</Button>);
+    render(<Button>Click me</Button>);
 
     expect(screen.getByText("Click me")).toHaveStyle({
       backgroundColor: "#2563EB",
@@ -22,11 +22,7 @@ describe("Button", () => {
     });
   });
   test("renders a button with custom colors", async () => {
-    render(
-      <Button color="#1E40AF" backgroundColor="#A78BFA">
-        Click me
-      </Button>
-    );
+    render(<Button>Click me</Button>);
 
     expect(screen.getByText("Click me")).toHaveStyle({
       backgroundColor: "#A78BFA",
