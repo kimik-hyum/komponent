@@ -1,42 +1,43 @@
 .inputWrap {
   position: relative;
   display: inline-block;
-}
-.label {
-  position: absolute;
-  top: 5px;
-  left: 15px;
-  transform: translate(5px, -12px);
-  transition: 0.2s transform;
-}
-.input {
-  position: relative;
-  z-index: 10;
-  border: 0;
-  background: transparent;
-  outline: none;
-  &::placeholder {
-    color: transparent;
+  .input {
+    position: relative;
+    z-index: 10;
+    border: 0;
+    background: transparent;
+    outline: none;
+    &::placeholder {
+      color: transparent;
+    }
+    &:placeholder-shown + .label {
+      transform: translate(0, 0);
+    }
+    &:focus + .label {
+      transform: translate(5px, -12px);
+    }
+    &:focus::placeholder {
+      color: #000;
+    }
   }
-  &:placeholder-shown + .label {
-    transform: translate(0, 0);
-  }
-  &:focus + .label {
+
+  .label {
+    position: absolute;
+    top: 5px;
+    left: 15px;
     transform: translate(5px, -12px);
+    transition: 0.2s transform;
   }
-  &:focus::placeholder {
-    color: #000;
-  }
-}
-.fieldset {
-  position: absolute;
-  top: -10px;
-  left: 0;
-  width: 100%;
-  border-radius: 5px;
-  box-sizing: border-box;
-  legend {
-    visibility: hidden;
-    padding: 0 5px;
+  .fieldset {
+    position: absolute;
+    top: -10px;
+    left: 0;
+    width: 100%;
+    border-radius: 4px;
+    box-sizing: border-box;
+    legend {
+      visibility: hidden;
+      padding: 0 5px;
+    }
   }
 }

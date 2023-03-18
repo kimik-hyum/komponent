@@ -1,7 +1,7 @@
 // src/component/Button/Button.stories.tsx
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
-import { Input } from "./Input";
+import Input from "./Input";
 
 export default {
   title: "Input",
