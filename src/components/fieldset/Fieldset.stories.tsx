@@ -1,22 +1,17 @@
 // src/component/Button/Button.stories.tsx
 import * as React from "react";
 import { Story, Meta } from "@storybook/react/types-6-0";
-import Input from "./Input";
+import Fieldset from "./Fieldset";
 
 export default {
-  title: "Input",
-  component: Input,
-  description: `Input.`,
-  argTypes: {
-    backgroundColor: { control: "color" },
-    color: { control: "color" },
-    primary: { control: "boolean" },
-  },
+  title: "Fieldset",
+  component: Fieldset,
+  description: `Fieldset.`,
 } as Meta;
 
 //👇 We create a “template” of how args map to rendering
 const Template: Story = (args) => {
-  return <Input label={"하이"} id={"id"} placeholder="아이디" size={"sm"} />;
+  return <Fieldset label={"테스트"} />;
 };
 //👇 Each story then reuses that template
 export const Default = Template.bind({});

@@ -1,43 +1,75 @@
 .inputWrap {
   position: relative;
   display: inline-block;
-  .input {
+  font-size: 16px;
+  input {
     position: relative;
     z-index: 10;
     border: 0;
     background: transparent;
     outline: none;
+
     &::placeholder {
       color: transparent;
     }
     &:placeholder-shown + .label {
-      transform: translate(0, 0);
+      transform: translate(0, calc(-50% + 3px));
     }
+    &:not(:placeholder-shown) + .label,
     &:focus + .label {
-      transform: translate(5px, -12px);
+      transform: translate(0px, calc(-50% - 13px));
+      font-size: 0.75em;
+    }
+    &:not(:placeholder-shown) ~ .fieldset legend {
+      max-width: 100%;
     }
     &:focus::placeholder {
       color: #000;
     }
   }
+  &[data-size="sm"] {
+    input {
+      height: 24px;
+      padding: 12px 14px 5px 14px;
+    }
+  }
+  &[data-focus="on"] {
+    .fieldset {
+      legend {
+        max-width: 100%;
+      }
+    }
+  }
 
   .label {
     position: absolute;
-    top: 5px;
+    top: 50%;
     left: 15px;
-    transform: translate(5px, -12px);
-    transition: 0.2s transform;
+    font-size: 1em;
+    transition: font-size 0.2s, transform 0.2s;
   }
   .fieldset {
     position: absolute;
-    top: -10px;
+    bottom: 0px;
     left: 0;
     width: 100%;
+    padding: 0 8px;
+    height: calc(100% + 5px);
     border-radius: 4px;
     box-sizing: border-box;
+    margin: 0;
     legend {
       visibility: hidden;
-      padding: 0 5px;
+      height: 24px;
+      max-width: 0%;
+      padding: 0;
+      transition: max-width 0.2s;
+      span {
+        display: inline-block;
+        padding: 0 5px;
+        background: #fff;
+        font-size: 0.75em;
+      }
     }
   }
 }
