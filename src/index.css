@@ -1,0 +1,13 @@
+:root {
+  /* Default Theme */
+  --primary-color: blue;
+  --secondary-color: red;
+  --font-size: 16px;
+}
+
+[data-theme="user"] {
+  /* User Theme */
+  --primary-color: green;
+  --secondary-color: purple;
+  --font-size: 18px;
+}

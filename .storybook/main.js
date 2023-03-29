@@ -19,6 +19,11 @@ module.exports = {
       include: path.resolve(__dirname, "../src"),
     });
 
+    // 기존 TypeScript 로더 삭제
+    config.module.rules = config.module.rules.filter(
+      (rule) => !(rule.test && rule.test.toString().includes("tsx"))
+    );
+
     // SCSS 지원 (CSS Modules 포함)
     config.module.rules.push({
       test: /\.scss$/,
@@ -35,10 +40,6 @@ module.exports = {
       ],
       include: path.resolve(__dirname, "../"),
     });
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      src: path.resolve(__dirname, "../src"),
-    };
 
     config.resolve.extensions.push(".ts", ".tsx");
 

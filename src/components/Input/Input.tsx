@@ -8,10 +8,11 @@ import * as React from "react";
 
 export interface InputProps extends CommonComponentProps<"input", "size"> {
   label: string;
+  htmlSize?: number;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ label, id, size, ...props }, ref): JSX.Element => {
+  ({ label, id, size, htmlSize, ...props }, ref): JSX.Element => {
     const [focused, onFocus, onBlur] = useFocus<HTMLInputElement>();
     return (
       <div
@@ -19,7 +20,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         data-size={size}
         data-focus={clsx(focused && "on")}
       >
-        <input {...{ ref, id, onFocus, onBlur }} {...props} />
+        <input size={htmlSize} {...{ ref, id, onFocus, onBlur }} {...props} />
         <label htmlFor={id} className={style.label}>
           {label}
         </label>
