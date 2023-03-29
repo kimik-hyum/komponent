@@ -16,7 +16,7 @@ export default {
 
 //👇 We create a “template” of how args map to rendering
 const Template: Story = (args) => {
-  return <Input label={"하이"} id={"id"} placeholder="아이디" size={"sm"} />;
+  return <Input label={"하이"} id={"id"} placeholder="아이디" />;
 };
 //👇 Each story then reuses that template
 export const Default = Template.bind({});

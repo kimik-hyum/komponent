@@ -1,43 +1,37 @@
-// src/components/Input.tsx
+// src/components/Input/Input.tsx
 import style from "./Input.module.scss";
 import clsx from "clsx";
 import { ComponentRef, forwardRef } from "react";
-import React from "react";
-import { CommonComponentProps } from "src/type/commonTypes";
-import { createPolymorphicComponent } from "src/lib/util";
+import { useFocus } from "src/hook/useEvent";
+import { CommonComponentProps, SizeType } from "src/type/commonTypes";
+import * as React from "react";
 
-const Input = createPolymorphicComponent({
-  tag: "input",
-  omitProps: ["size", "alt"],
-})<{
+export interface InputProps extends CommonComponentProps<"input", "size"> {
   label: string;
-}>()(({ label, id, size, ...props }, ref) => {
-  const [focused, setFocused] = React.useState(false);
-  return (
-    <div
-      className={clsx(style.inputWrap, focused && style.onFocus)}
-      data-size={size}
-      data-focus={clsx(focused && "on")}
-    >
-      <input
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        {...props}
-        {...{ ref, id }}
-      />
-      <label htmlFor={id} className={style.label}>
-        {label}
-      </label>
-      <fieldset className={style.fieldset}>
-        {
-          <legend>
-            <span>{label}</span>
-          </legend>
-        }
-      </fieldset>
-    </div>
-  );
-});
-export default Input;
+}
 
-Input.displayName = "Input";
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ label, id, size, ...props }, ref): JSX.Element => {
+    const [focused, onFocus, onBlur] = useFocus<HTMLInputElement>();
+    return (
+      <div
+        className={clsx(style.inputWrap)}
+        data-size={size}
+        data-focus={clsx(focused && "on")}
+      >
+        <input {...{ ref, id, onFocus, onBlur }} {...props} />
+        <label htmlFor={id} className={style.label}>
+          {label}
+        </label>
+        <fieldset className={style.fieldset}>
+          {
+            <legend>
+              <span>{label}</span>
+            </legend>
+          }
+        </fieldset>
+      </div>
+    );
+  }
+);
+export default Input;
