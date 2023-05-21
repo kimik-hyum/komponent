@@ -2,6 +2,7 @@ import * as React from "react";
 import uuid from "react-uuid";
 import style from "./ImageUpload.module.scss";
 import Resizer from "react-image-file-resizer";
+import ImagePreview from "./ImagePreview";
 
 export interface ImageUploadProps
   extends React.ComponentPropsWithoutRef<"input"> {}
@@ -136,16 +137,19 @@ export const ImageUpload = React.forwardRef<HTMLInputElement, ImageUploadProps>(
     console.log(uploadFiles, resizeFiles);
 
     return (
-      <div
-        onDrop={onDrop}
-        onDragOver={onDragOver}
-        onDragLeave={onDragLeave}
-        className={style.upload}
-      >
-        <input type="text" onPaste={onPaste} readOnly />
-        <input type="file" onChange={onChange} {...{ id, multiple, ref }} />
-        <label htmlFor={id}>업로드</label>
-      </div>
+      <>
+        <div
+          onDrop={onDrop}
+          onDragOver={onDragOver}
+          onDragLeave={onDragLeave}
+          className={style.upload}
+        >
+          <input type="text" onPaste={onPaste} readOnly />
+          <input type="file" onChange={onChange} {...{ id, multiple, ref }} />
+          <label htmlFor={id}>업로드</label>
+        </div>
+        <ImagePreview {...{ resizeFiles, setResizeFiles }} />
+      </>
     );
   }
 );
