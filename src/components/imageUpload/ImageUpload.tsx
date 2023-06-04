@@ -5,11 +5,16 @@ import Resizer from "react-image-file-resizer";
 import ImagePreview from "./ImagePreview";
 
 export interface ImageUploadProps
-  extends React.ComponentPropsWithoutRef<"input"> {}
+  extends React.ComponentPropsWithoutRef<"input"> {
+  resizeWidth?: number;
+  resizeHeight?: number;
+  images: UploadFiles[];
+  onImageUpload: (files: UploadFiles[]) => void;
+}
 
 export interface UploadFiles {
   id: string;
-  file: File;
+  file?: File;
   url?: string;
 }
 
@@ -67,6 +72,7 @@ const handleResizing = async ({
             value: string | File | Blob | ProgressEvent<FileReader>
           ) => void
         ) => {
+          if (!item.file) return resolve("");
           Resizer.imageFileResizer(
             item.file, //resize file
             resizewidth || 1920, //max width
@@ -101,23 +107,49 @@ const handleResizing = async ({
 };
 
 export const ImageUpload = React.forwardRef<HTMLInputElement, ImageUploadProps>(
-  ({ id, multiple, ...props }, ref) => {
+  (
+    {
+      id,
+      multiple,
+      resizeWidth = 1920,
+      resizeHeight = 2000,
+      images,
+      onImageUpload,
+      ...props
+    },
+    ref
+  ) => {
     const [uploadFiles, setUploadFiles] = React.useState<UploadFiles[]>();
     const [resizeFiles, setResizeFiles] = React.useState<UploadFiles[]>([]);
+    const [isDrop, setIsDrop] = React.useState(false);
+    React.useEffect(() => {
+      onImageUpload(resizeFiles);
+    }, [resizeFiles]);
     React.useEffect(() => {
       if (!!uploadFiles?.length) {
         handleResizing({
           files: uploadFiles,
-          resizewidth: 100,
-          resizeheight: 100,
+          resizewidth: resizeWidth,
+          resizeheight: resizeHeight,
         }).then((files) => {
           setResizeFiles(resizeFiles?.concat(files));
         });
       }
     }, [uploadFiles]);
+    React.useEffect(() => {
+      if (!!images?.length) {
+        setResizeFiles(images);
+      }
+    }, [images]);
 
-    const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {};
-    const onDragLeave = (e: React.DragEvent<HTMLDivElement>) => {};
+    const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+      e.preventDefault();
+      setIsDrop(true);
+    };
+    const onDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+      e.preventDefault();
+      setIsDrop(false);
+    };
 
     const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
       setUploadFiles(
@@ -134,21 +166,27 @@ export const ImageUpload = React.forwardRef<HTMLInputElement, ImageUploadProps>(
         setImageFiles(filterImage(getDataTransfer(e.target.files)))
       );
     };
-    console.log(uploadFiles, resizeFiles);
-
     return (
       <>
         <div
           onDrop={onDrop}
           onDragOver={onDragOver}
           onDragLeave={onDragLeave}
+          data-active={isDrop}
           className={style.upload}
         >
-          <input type="text" onPaste={onPaste} readOnly />
+          <input
+            type="text"
+            onPaste={onPaste}
+            readOnly
+            value="파일을 drag and drop 해도됩니다!"
+          />
           <input type="file" onChange={onChange} {...{ id, multiple, ref }} />
           <label htmlFor={id}>업로드</label>
         </div>
-        <ImagePreview {...{ resizeFiles, setResizeFiles }} />
+        {!!resizeFiles?.length && (
+          <ImagePreview {...{ resizeFiles, setResizeFiles }} />
+        )}
       </>
     );
   }
