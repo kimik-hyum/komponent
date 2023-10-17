@@ -1,10 +1,8 @@
-// src/components/Input/Input.tsx
+import * as React from "react";
 import style from "./Input.module.scss";
-import clsx from "clsx";
 import { ComponentRef, forwardRef } from "react";
 import { useFocus } from "src/hook/useEvent";
 import { CommonComponentProps, SizeType } from "src/type/commonTypes";
-import * as React from "react";
 
 export interface InputProps extends CommonComponentProps<"input", "size"> {
   label: string;
@@ -12,14 +10,17 @@ export interface InputProps extends CommonComponentProps<"input", "size"> {
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ label, id, size, ...props }, ref): JSX.Element => {
-    const [focused, onFocus, onBlur] = useFocus<HTMLInputElement>();
+    const [focused, setFocused] = React.useState(false);
     return (
-      <div
-        className={clsx(style.inputWrap)}
-        data-size={size}
-        data-focus={clsx(focused && "on")}
-      >
-        <input {...{ ref, id, onFocus, onBlur }} {...props} />
+      <div className={style.inputWrap}>
+        <input
+          type="text"
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          {...props}
+          {...{ ref, id, focused }}
+          className={style.input}
+        />
         <label htmlFor={id} className={style.label}>
           {label}
         </label>
