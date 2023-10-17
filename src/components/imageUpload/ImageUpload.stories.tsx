@@ -15,4 +15,15 @@ export const Default = Template.bind({});
 Default.args = {
   id: "image-upload",
   multiple: true,
+  images: [
+    {
+      id: "1",
+      url: "https://ssl.pstatic.net/static/nid/account/naver_og_image.png",
+    },
+  ],
+  resizeWidth: 1920,
+  resizeHeight: 2000,
+  onImageUpload: (e) => {
+    console.log(e);
+  },
 };
