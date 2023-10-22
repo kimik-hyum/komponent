@@ -40,11 +40,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     }
 
     return (
-      <div className={`${style.inputWrap} ${style["kui-input-root"]}`}>
+      <div className={`${style.inputWrap} kui-input-root`}>
         {startAdornment && (
-          <span className={style["kui-input-startAdornment"]}>
-            {startAdornment}
-          </span>
+          <span className="kui-input-startAdornment">{startAdornment}</span>
         )}
         <input
           type="text"
@@ -58,23 +56,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           }}
           {...props}
           {...{ ref, id, focused }}
-          className={`${style.input} ${style["kui-input-base"]}`}
+          className={`${style.input} kui-input-base"`}
         />
         {endAdornment && (
-          <span className={style["kui-input-endAdornment"]}>
-            {endAdornment}
-          </span>
+          <span className="kui-input-endAdornment">{endAdornment}</span>
         )}
-        <label
-          htmlFor={id}
-          className={`${style.label} ${style["kui-input-label"]}`}
-        >
+        <label htmlFor={id} className={`${style.label} kui-input-label`}>
           {label}
         </label>
-        <fieldset
-          className={`${style.fieldset} ${style["kui-input-fieldset"]}`}
-        >
-          <legend className={style["kui-input-legend"]}>
+        <fieldset className={`${style.fieldset} kui-input-fieldset`}>
+          <legend className="kui-input-legend">
             <span>{label}</span>
           </legend>
         </fieldset>
