@@ -1,13 +1,9 @@
 import { useState } from "react";
 
-type SetStateAction<T> = T | ((currentValue: T) => T);
-
-function useCustomState<T>(
-  defaultValue: T
-): [T, (action: SetStateAction<T>) => void] {
+function useCustomState<T>(defaultValue: T): [T, (value: T) => void] {
   const [value, setValue] = useState<T>(defaultValue);
 
-  const send = (action: SetStateAction<T>) => {
+  const send = (action: T) => {
     setValue(action);
   };
 

@@ -1,5 +1,5 @@
-import connect from "../../util/connect";
 import useCustomState from "../../hook/useCustomState";
+import tabConnect from "../../util/tabConnect";
 
 // 컴포넌트 예시
 type Item = {
@@ -8,20 +8,30 @@ type Item = {
 };
 
 export default function TabsAndToggleButton({ data }: { data: Item[] }) {
-  const [value, send] = useCustomState<string>("");
-  const api = connect(value, send);
+  const [value, send] = useCustomState<string>("tab1");
+  const api = tabConnect(value, send);
+    const customHandlers = {
+    onClick: (event: React.SyntheticEvent<HTMLElement>) => console.log("Clicked!"),
+  };
+  console.log(value)
 
   return (
     <div>
-      {data.map((item) => (
-        <button
-          {...api.createEventHandler("onClick", item.value)}
-          aria-selected={value === item.value}
-          key={item.value}
-        >
-          {item.label}
-        </button>
-      ))}
+      <div {...api.getTabListProps()}>
+        {data.map((item) => {
+          const isDisabled = item.value === "tab3";
+          return (<button
+            id={`tab-${item.value}`}
+            disabled={isDisabled}
+            {...api.createEventHandler(["onClick"], item.value, customHandlers)}
+            {...api.getTabTriggerProps(item.value)}
+            key={item.value}
+          >
+            {item.label}
+          </button>
+          )
+        })}
+      </div>
       {data.map((item) => (
         <div {...api.getContentProps(item.value)} key={item.value}>
           {item.label}
