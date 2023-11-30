@@ -1,5 +1,6 @@
 import useCustomState from "../../hook/useCustomState";
 import tabConnect from "../../util/tabConnect";
+import { getTabListProps } from "../../util/tabAccessibility";
 
 // 컴포넌트 예시
 type Item = {
@@ -9,21 +10,23 @@ type Item = {
 
 export default function TabsAndToggleButton({ data }: { data: Item[] }) {
   const [value, send] = useCustomState<string>("tab1");
-  const api = tabConnect(value, send);
+  const api = tabConnect(value, send, {
+    getTabListProps,
+  });
     const customHandlers = {
     onClick: (event: React.SyntheticEvent<HTMLElement>) => console.log("Clicked!"),
   };
-  console.log(value)
+
 
   return (
     <div>
-      <div {...api.getTabListProps()}>
+      <div {...api.getTabListProps}>
         {data.map((item) => {
           const isDisabled = item.value === "tab3";
           return (<button
             id={`tab-${item.value}`}
             disabled={isDisabled}
-            {...api.createEventHandler(["onClick"], item.value, customHandlers)}
+            {...api.createEventHandler(["onClick"], item.value, { customHandlers })}
             {...api.getTabTriggerProps(item.value)}
             key={item.value}
           >

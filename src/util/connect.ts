@@ -1,16 +1,26 @@
 type EventType = keyof React.DOMAttributes<HTMLElement>;
+type CreateEventHandlerOptions = {
+  customHandlers?: Partial<Record<EventType, (event: React.SyntheticEvent<HTMLElement>) => void>>;
+  delay?: number;
+};
+
 
 function connect<T>(value: T, send: (value: T) => void, multiple: boolean = false) {
+  const timeouts: Record<string, NodeJS.Timeout> = {};
   const createEventHandler = (
     eventTypes: EventType | EventType[],
-    itemValue: string,
-    customHandlers?: Partial<Record<EventType, (event: React.SyntheticEvent<HTMLElement>) => void>>
+    itemValue: string | boolean,
+    options?: CreateEventHandlerOptions
   ) => {
+    const { customHandlers, delay } = options || {};
     const handlers: Record<string, (event: React.SyntheticEvent<HTMLElement>) => void> = {};
 
     const eventList = Array.isArray(eventTypes) ? eventTypes : [eventTypes];
     const handleClick = (event: React.SyntheticEvent<HTMLElement>) => {
-      if (multiple) {
+       // 이벤트 식별자 생성
+
+      const updateValue = () => {
+        if (multiple && typeof itemValue === 'string') {
         let newValue: string[];
         if (Array.isArray(value)) {
           if (value.includes(itemValue)) {
@@ -25,7 +35,14 @@ function connect<T>(value: T, send: (value: T) => void, multiple: boolean = fals
       } else {
         send(itemValue as T);
       }
-
+    }
+      if (!!delay) {
+        const eventId = `${event.type}-${String(itemValue)}`;
+        clearTimeout(timeouts[eventId]); 
+        timeouts[eventId] = setTimeout(updateValue, delay);
+      } else {
+        updateValue();
+      }
       customHandlers?.onClick?.(event);
     };
 

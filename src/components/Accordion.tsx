@@ -9,7 +9,7 @@ type Item = {
 };
 
 export default function Accordion({ data }: { data: Item[] }) {
-  const [value, send] = useCustomState<string[]>([]);
+  const [value, send] = useCustomState<string[]>(['1']);
   const api = connect(value, send, true);
     const customHandlers = {
     onClick: (event: React.SyntheticEvent<HTMLElement>) => console.log("Clicked!"),
@@ -24,7 +24,7 @@ export default function Accordion({ data }: { data: Item[] }) {
             <div key={item.value}>
               <button
                 id={`accordion-${item.value}`}
-                {...api.createEventHandler(["onClick"], item.value, customHandlers)}
+                {...api.createEventHandler(["onClick"], item.value, { customHandlers })}
               >
                 {item.title}
               </button>
