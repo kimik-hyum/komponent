@@ -1,18 +1,23 @@
-// tabConnect.ts
-import connect from './connect';
+import connect from "./connect";
 
-// TabConnect API 타입 정의
-type TabConnectAPI = ReturnType<typeof connect> & {
+type TabConnectAPI = ReturnType<typeof connect<string>> & {
   getTabTriggerProps: (itemValue: string) => Record<string, any>;
   getTabListProps?: Record<string, any>;
 };
 
 type TabConnectOptions = {
-  getTabListProps?: (value: string, send: (value: string) => void) => Record<string, any>;
+  getTabListProps?: (
+    value: string,
+    send: (value: string) => void
+  ) => Record<string, any>;
 };
 
-function tabConnect(value: string, send: (value: string) => void, options?: TabConnectOptions): TabConnectAPI {
-  const baseProps = connect(value, send);
+function tabConnect(
+  value: string,
+  send: (value: string) => void,
+  options?: TabConnectOptions
+): TabConnectAPI {
+  const baseProps = connect<string>(value, send);
 
   const api: TabConnectAPI = {
     ...baseProps,
@@ -26,7 +31,9 @@ function tabConnect(value: string, send: (value: string) => void, options?: TabC
         tabIndex: isSelected ? 0 : -1,
       };
     },
-    getTabListProps: options?.getTabListProps ? options.getTabListProps(value, send) : {}
+    getTabListProps: options?.getTabListProps
+      ? options.getTabListProps(value, send)
+      : {},
   };
 
   return api;

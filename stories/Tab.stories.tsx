@@ -1,10 +1,10 @@
 import React from "react";
 
-import TabsAndToggleButton from "../src/components/Tabs/TabsAndToggleButton";
+import Tab from "../src/components/Tabs/Tab";
 
 export default {
   title: "Example/Tab",
-  component: TabsAndToggleButton,
+  component: Tab,
   argTypes: {
     backgroundColor: { control: "color" },
   },
@@ -18,4 +18,4 @@ const tabData = [
   { value: "tab4", label: "Tab 4" },
 ];
 
-export const Tabs = () => <TabsAndToggleButton data={tabData} />;
+export const Tabs = () => <Tab data={tabData} />;
