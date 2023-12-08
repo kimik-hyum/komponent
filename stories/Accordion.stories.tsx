@@ -1,5 +1,6 @@
 import React from "react";
 import * as Accordion from "../src/components/Accordion/index";
+import { Text } from "../src/components/Text";
 
 export default {
   title: "Example/Accordion",
@@ -12,14 +13,19 @@ export default {
 
 export const SimpleAccordion = () => (
   <Accordion.Root>
-    <Accordion.Item value="1">
+    <Accordion.Item value="1" as="div">
       {({ active }) => {
         return (
           <>
-          <Accordion.Trigger>Item 1</Accordion.Trigger>
-          <Accordion.Content>Content 1</Accordion.Content>
-        </>
-      )}}
+            <Accordion.Trigger>Item 1</Accordion.Trigger>
+            <Accordion.Content>
+              <Text as="button" size={1} color="red">
+                123
+              </Text>
+            </Accordion.Content>
+          </>
+        );
+      }}
     </Accordion.Item>
 
     <Accordion.Item value="2">

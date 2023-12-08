@@ -2,6 +2,9 @@ import { ComponentRef, forwardRef } from "react";
 
 export type SizeType = "sm" | "md" | "lg";
 export type ColorType = "default" | "inherit" | "primary" | "secondary";
+export type PolymorphicProps<C extends React.ElementType> = {
+  as: C;
+} & Omit<React.ComponentPropsWithRef<C>, "as">;
 
 export type CommonComponentProps<
   T extends keyof JSX.IntrinsicElements,
@@ -16,9 +19,8 @@ type AsProp<T extends React.ElementType> = {
 };
 
 // 직관적인 이름을 붙여서 타입으로 만들어준다.
-export type PolymorphicRef<
-  T extends React.ElementType
-> = React.ComponentPropsWithRef<T>["ref"];
+export type PolymorphicRef<T extends React.ElementType> =
+  React.ComponentPropsWithRef<T>["ref"];
 
 // 결합 타입을 만든다.
 export type PolymorphicComponentProps<

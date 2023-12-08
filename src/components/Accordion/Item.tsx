@@ -1,36 +1,45 @@
-import React, { ReactNode, useContext } from "react";
+import React, { ReactNode, useContext, forwardRef, ElementType } from "react";
 import { AccordionContext } from "./Root";
+import { isFunctionChild } from "../../util/util";
+import {
+  PolymorphicComponentProps,
+  PolymorphicRef,
+} from "../../type/commonTypes";
 
-type AccordionContextType = {
+type _ItemProps = {
+  value: string;
   disabled?: boolean;
-  value?: string;
+  children: ReactNode | (({ active }: { active: boolean }) => ReactNode);
 };
 
-type AccordionItemProps = {
-  children: ((context: { active: boolean }) => ReactNode) | ReactNode;
-  className?: string;
-};
+export type ItemProps<T extends React.ElementType> = PolymorphicComponentProps<
+  T,
+  _ItemProps
+> &
+  React.RefAttributes<T>;
 
-export const ItemContext = React.createContext<AccordionContextType>({});
+type ItemComponent<T extends React.ElementType = "span"> =
+  React.ForwardRefExoticComponent<
+    React.PropsWithoutRef<ItemProps<T>> & React.RefAttributes<T>
+  >;
 
-export const AccordionItem: React.FC<AccordionItemProps & AccordionContextType> = ({
-  value,
-  disabled,
-  children,
-  ...props
-}) => {
-  const { activeItem } = useContext(AccordionContext) || {};
-  const isActive = activeItem === value;
+// export const AccordionItem = forwardRef<ElementType, AccordionItemProps<ElementType>>(
+//   ({ value, disabled, children, as, ...props }, ref) => {
+const AccordionItem = forwardRef(
+  <T extends React.ElementType = "span">(
+    { value, disabled, children, as, ...props }: ItemProps<T>,
+    ref: React.Ref<T>
+  ) => {
+    const { activeItem } = useContext(AccordionContext) || {};
+    const isActive = activeItem === value;
+    const Element = as || "span";
 
-  const isFunction = (child: any): child is (context: { active: boolean }) => ReactNode => {
-    return typeof child === 'function';
+    return (
+      <Element ref={ref} {...props}>
+        {isFunctionChild(children) ? children({ active: isActive }) : children}
+      </Element>
+    );
   }
+) as ItemComponent;
 
-  return (
-    <ItemContext.Provider value={{ value, disabled }}>
-      <div>
-        {isFunction(children) ? children({ active: isActive }) : children}
-      </div>
-    </ItemContext.Provider>
-  );
-};
+export default AccordionItem;
